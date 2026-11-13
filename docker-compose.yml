@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:17
+    container_name: agenda-db
+    environment:
+      POSTGRES_DB: agenda
+      POSTGRES_USER: agenda
+      POSTGRES_PASSWORD: agenda
+    ports:
+      - "5440:5432"
+    volumes:
+      - agenda-db-data:/var/lib/postgresql/data
+
+volumes:
+  agenda-db-data:

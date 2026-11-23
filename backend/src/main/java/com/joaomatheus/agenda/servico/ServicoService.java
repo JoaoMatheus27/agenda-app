@@ -18,7 +18,9 @@ public class ServicoService {
     public List<ServicoResponse> listar(){
         return servicoRepository.findAll()
         .stream()
-        .map(servico -> new ServicoResponse( servico.getId() , servico.getNome() , servico.getDuracaoMinutos() , servico.getPreco()))
+        // .map(servico -> new ServicoResponse( servico.getId() , servico.getNome() , servico.getDuracaoMinutos() , servico.getPreco()))
+        // .map(servico -> ServicoResponse.from(servico))
+        .map(ServicoResponse::from)
         .toList();
     }   
 
@@ -26,9 +28,7 @@ public class ServicoService {
     public ServicoResponse criar(ServicoRequest servicoRequest){
         Servico servicoEntity = new Servico(servicoRequest.nome(),servicoRequest.duracaoMinutos(), servicoRequest.preco() );
         Servico savedEntity = servicoRepository.save(servicoEntity);
-        return new ServicoResponse(savedEntity.getId() , savedEntity.getNome() , savedEntity.getDuracaoMinutos() , savedEntity.getPreco());
+        // return new ServicoResponse(savedEntity.getId() , savedEntity.getNome() , savedEntity.getDuracaoMinutos() , savedEntity.getPreco());
+        return ServicoResponse.from(servicoEntity);
     }                               
-}     
-
-
-
+};     

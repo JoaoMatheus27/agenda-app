@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
   
 public record ServicoResponse(Long id, String nome, Integer duracaoMinutos, BigDecimal preco) {
-    public static ServicoResponse from(ServicoResponse servicoResponse){
-        return new ServicoResponse(servicoResponse.getId() , servicoResponse.getNome() , servicoResponse.getDuracaoMinutos() , servicoResponse.getPreco()); 
+    public static ServicoResponse from(Servico servico){
+        return new ServicoResponse(servico.getId() , servico.getNome() , servico.getDuracaoMinutos() , servico.getPreco()); 
     }
 }

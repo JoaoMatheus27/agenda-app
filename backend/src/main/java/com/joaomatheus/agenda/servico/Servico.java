@@ -54,8 +54,14 @@ public class Servico {
     }
 
     // getter methods
-    public boolean isActive(){
+    public boolean isAtivo(){
         return ativo;
+    }
+
+    public void atualizar(String nome, Integer duracaoMinutos, BigDecimal preco){
+        this.nome = nome;
+        this.duracaoMinutos = duracaoMinutos;
+        this.preco = preco;
     }
 
 }

@@ -42,5 +42,13 @@ public class ServicoService {
         return ServicoResponse.from(resultadoBuscar);
 
     }
+
+    @Transactional
+    public ServicoResponse atualizar(Long id, ServicoRequest servicoRequest){
+
+        Servico resultadoBuscarAtualizar = servicoRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Serviço não encontrado: " + id));
+        resultadoBuscarAtualizar.atualizar(servicoRequest.nome(), servicoRequest.duracaoMinutos(), servicoRequest.preco());
+        return ServicoResponse.from(resultadoBuscarAtualizar);
+    }
     
 };     

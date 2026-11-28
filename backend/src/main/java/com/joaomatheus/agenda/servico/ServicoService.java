@@ -1,9 +1,13 @@
 package com.joaomatheus.agenda.servico;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.joaomatheus.agenda.shared.exception.RecursoNaoEncontradoException;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 @Service 
@@ -30,5 +34,13 @@ public class ServicoService {
         Servico savedEntity = servicoRepository.save(servicoEntity);
         // return new ServicoResponse(savedEntity.getId() , savedEntity.getNome() , savedEntity.getDuracaoMinutos() , savedEntity.getPreco());
         return ServicoResponse.from(servicoEntity);
-    }                               
+    }      
+    
+    public ServicoResponse buscarPorId(Long id){
+        
+        Servico resultadoBuscar = servicoRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Serviço não encontrado: " + id));
+        return ServicoResponse.from(resultadoBuscar);
+
+    }
+    
 };     

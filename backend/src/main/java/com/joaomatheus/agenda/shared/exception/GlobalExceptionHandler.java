@@ -24,5 +24,14 @@ public class GlobalExceptionHandler{
         erroResponse.setTitle("Dados Inválidos");
         erroResponse.setProperty("erros", erros);
         return erroResponse;
-    };
-};
+    }
+
+    @ExceptionHandler(RecursoNaoEncontradoException.class)
+    public ProblemDetail tratarNaoEncontrado(RecursoNaoEncontradoException ex){
+        ProblemDetail erroRecurso = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        erroRecurso.setTitle("Recurso não encontrado");
+        erroRecurso.setDetail(ex.getMessage());
+        return erroRecurso;
+    }
+
+}

@@ -1,5 +1,9 @@
 package com.joaomatheus.agenda.shared.exception;
 
-public class RecursoNaoEncontradoException extends RunTimeExceptions{
+public class RecursoNaoEncontradoException extends RuntimeException{
+    
+    public RecursoNaoEncontradoException(String mensagem){
+        super(mensagem);
+    } 
 
-}
+}   

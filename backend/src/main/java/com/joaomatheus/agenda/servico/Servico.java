@@ -64,5 +64,9 @@ public class Servico {
         this.preco = preco;
     }
 
+    public void desativar(){
+        this.ativo = false;
+    }
+
 }
 

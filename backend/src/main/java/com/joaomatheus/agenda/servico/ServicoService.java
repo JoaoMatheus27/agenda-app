@@ -1,18 +1,17 @@
 package com.joaomatheus.agenda.servico;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.joaomatheus.agenda.shared.exception.RecursoNaoEncontradoException;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 @Service 
 
 public class ServicoService {
+
     private final ServicoRepository servicoRepository;
 
     public ServicoService(ServicoRepository servicoRepository){
@@ -20,7 +19,7 @@ public class ServicoService {
     }
 
     public List<ServicoResponse> listar(){
-        return servicoRepository.findAll()
+        return servicoRepository.findByAtivoTrue(Sort.by("nome"))
         .stream()
         // .map(servico -> new ServicoResponse( servico.getId() , servico.getNome() , servico.getDuracaoMinutos() , servico.getPreco()))
         // .map(servico -> ServicoResponse.from(servico))
@@ -30,25 +29,42 @@ public class ServicoService {
 
     @Transactional 
     public ServicoResponse criar(ServicoRequest servicoRequest){
+
         Servico servicoEntity = new Servico(servicoRequest.nome(),servicoRequest.duracaoMinutos(), servicoRequest.preco() );
         Servico savedEntity = servicoRepository.save(servicoEntity);
         // return new ServicoResponse(savedEntity.getId() , savedEntity.getNome() , savedEntity.getDuracaoMinutos() , savedEntity.getPreco());
-        return ServicoResponse.from(servicoEntity);
+        return ServicoResponse.from(savedEntity);
+
     }      
     
     public ServicoResponse buscarPorId(Long id){
-        
-        Servico resultadoBuscar = servicoRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Serviço não encontrado: " + id));
-        return ServicoResponse.from(resultadoBuscar);
+
+        Servico entidadeSalva = buscarEntidade(id) ;
+        return ServicoResponse.from(entidadeSalva);
 
     }
 
     @Transactional
     public ServicoResponse atualizar(Long id, ServicoRequest servicoRequest){
 
-        Servico resultadoBuscarAtualizar = servicoRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Serviço não encontrado: " + id));
-        resultadoBuscarAtualizar.atualizar(servicoRequest.nome(), servicoRequest.duracaoMinutos(), servicoRequest.preco());
-        return ServicoResponse.from(resultadoBuscarAtualizar);
+        Servico entidadeSalva = buscarEntidade(id) ;
+        entidadeSalva.atualizar(servicoRequest.nome(), servicoRequest.duracaoMinutos(), servicoRequest.preco());
+        return ServicoResponse.from(entidadeSalva);
+
+    }
+
+    @Transactional
+    public void desativar(Long id){
+
+        Servico entidadeSalva = buscarEntidade(id);
+        entidadeSalva.desativar();
+
+    }
+
+    private Servico buscarEntidade(Long id){
+
+        return servicoRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException("Serviço não encontrado: " + id));
+
     }
     
-};     
+}   
